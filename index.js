@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 
+const cors = require('cors')
+app.use(cors())
+
 const morgan = require('morgan')
 morgan.token('post', function(req, res) {
   if (req.method === 'POST') {
@@ -45,9 +48,9 @@ let persons = [
     },
   ]
 
-app.get('/', (req, res) => {
-  res.send('<h1>Welcome To Local Host Port 3000!</h1>')
-})
+// app.get('/', (req, res) => {
+//   res.send('<h1>Welcome To Local Host Port 3000!</h1>')
+// })
 
 app.get('/api/persons', (req, res) => {
   res.json(persons)
@@ -86,13 +89,14 @@ const generateId = () => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
+  console.log("persons:" , persons)
 
   if (!body.name) {
     return response.status(400).json({ 
       error: 'name missing' 
     })
   }
-  if (persons.prototype.find(name === body.name)) {
+  if (persons.find((person) => person.name === body.name)) {
     return response.status(400).json({ 
       error: 'name already exists' 
     })
@@ -108,13 +112,16 @@ app.post('/api/persons', (request, response) => {
     number: body.number,
     id: generateId(),
   }
+  console.log(person)
 
   persons = persons.concat(person)
+  console.log(persons)
 
-  response.json(person)
+  // response.json(person)
+  response.send(persons)
 })
 
-const PORT = 3000
+const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
