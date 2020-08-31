@@ -77,6 +77,7 @@ app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
 
+  response.send(persons)
   response.status(204).end()
 })
 
@@ -89,7 +90,6 @@ const generateId = () => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
-  console.log("persons:" , persons)
 
   if (!body.name) {
     return response.status(400).json({ 
@@ -112,10 +112,8 @@ app.post('/api/persons', (request, response) => {
     number: body.number,
     id: generateId(),
   }
-  console.log(person)
 
   persons = persons.concat(person)
-  console.log(persons)
 
   // response.json(person)
   response.send(persons)

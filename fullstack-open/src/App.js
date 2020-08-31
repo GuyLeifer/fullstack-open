@@ -15,18 +15,16 @@ function App() {
     fetch();
   }, [])
 
-  const handleDelete = (e) => {
-    axios.delete(`/api/persons/${e.target.id}`)
-    fetch();
+  const handleDelete = async (e) => {
+    let response = await axios.delete(`/api/persons/${e.target.id}`)
+    setBook(response.data);
   }
 
   const handleSubmit = async () => {
-    console.log(name, number)
     let response = await axios.post('/api/persons', {
       name, 
       number
     })
-    console.log(response.data)
     setBook(response.data);
   }
 
